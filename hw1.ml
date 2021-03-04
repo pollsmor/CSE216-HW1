@@ -21,3 +21,11 @@ let rec compress lst =
   | h::t -> if h = List.hd t then compress t else h::compress t;;
 
 compress ["a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e"];;
+
+(* 1.3 ============================================= *)
+let rec remove_if lst pred = 
+  match lst with
+  | [] -> []
+  | h::t -> if pred h then remove_if t pred else h::remove_if t pred;;
+
+remove_if [1;2;3;4;5] (fun x -> x mod 2 = 1);;
