@@ -29,3 +29,24 @@ let rec remove_if lst pred =
   | h::t -> if pred h then remove_if t pred else h::remove_if t pred;;
 
 remove_if [1;2;3;4;5] (fun x -> x mod 2 = 1);;
+
+(* 1.4 ============================================= *)
+let min (i: int) (j: int) = 
+  if (i < j) then i else j;;
+
+let rec sliceHelp lst i j idx =
+  match lst with
+  | [] -> []
+  | h::t -> if (idx >= i && idx < j) then h::sliceHelp t i j (idx + 1) 
+  else if idx >= j then [] (* Stop condition *)
+  else sliceHelp t i j (idx + 1);;
+
+let slice lst i j = (* Serves a double purpose of being a wrapper function and handling indices "gracefully" *)
+  if (i < j) then sliceHelp lst i (min j (List.length lst)) 0
+  else [];;
+
+slice ["a";"b";"c";"d";"e";"f";"g";"h"] 2 6;;
+slice ["a";"b";"c";"d";"e";"f";"g";"h"] 3 2;;
+slice ["a";"b";"c";"d";"e";"f";"g";"h"] 3 20;;
+
+(* 1.5 ============================================= *)
