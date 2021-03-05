@@ -99,3 +99,13 @@ let rec equiv_on f g lst =
 (* let f i = i * i;; *)
 (* let g i = 3 * i;; *)
 (* equiv_on f g [1;2;3];; *)
+
+(* 1.8 ============================================= *)
+let rec pairwisefilter cmp lst = 
+  match lst with
+  | [] -> []
+  | h::[] -> [h] (* Lone element - return as is *)
+  | h::t -> (cmp h (List.hd t))::pairwisefilter cmp (List.tl t);;
+  (* List.tl t as I want to go 2 elements ahead *)
+
+pairwisefilter min [14; 11; 20; 25; 10; 11];;
