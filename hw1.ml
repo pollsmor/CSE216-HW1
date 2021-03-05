@@ -51,22 +51,24 @@ let slice lst i j = (* Serves a double purpose of being a wrapper function and h
 
 (* 1.5 ============================================= *)
 let rec updateClasses fn el classes =
-  match classes with (* `a list list [[1]]*)
-  | []::t -> [[]]  (* End condition *)
-  | (h::[])::t ->   if (fn h el) then (h::[el])::updateClasses fn el t
+  match classes with (* `a list list *)
+  | []::t -> []  (* Shouldn't run? Just to exhaust possibilities *)
+  | (h::[])::t ->   if (fn h el) then (h::[el])::t
                                else [h]::(updateClasses fn el t)
-  | (h::more)::t -> if (fn h el) then ((h::more)@[el])::updateClasses fn el t
+  | (h::more)::t -> if (fn h el) then ((h::more)@[el])::t
                                else (h::more)::(updateClasses fn el t)
-  | [] -> [[]];; (* Shouldn't run? *)
+  | [] -> [[el]];; (* End condition - create new class*)
 
 let rec equivsHelp fn lst classes = 
   match lst with 
   | [] -> classes 
-  | h::t -> equivsHelp fn t (updateClasses fn h classes);;
+  | h::t -> equivsHelp fn t (updateClasses fn h classes);; (* 2::[3] *)
 
 let equivs fn lst = 
   match lst with 
   | [] -> [[]]
-  | h::t -> equivsHelp fn t [[h]];;
+  | h::t -> equivsHelp fn t [[h]];; (* 1:[2; 3] *)
 
-equivs (fun x y -> (=) (x mod 2) (y mod 2)) [1; 2; 3; 4; 5; 6; 7; 8];;
+(* equivs (fun x y -> (=) (x mod 3) (y mod 3)) [1; 2; 3; 4; 5; 6; 7; 8];; *)
+
+(* 1.6 ============================================= *)
