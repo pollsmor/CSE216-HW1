@@ -72,3 +72,22 @@ let equivs fn lst =
 (* equivs (fun x y -> (=) (x mod 3) (y mod 3)) [1; 2; 3; 4; 5; 6; 7; 8];; *)
 
 (* 1.6 ============================================= *)
+let rec isPrime x curr = 
+  if (x == 2 || x == 3) then true
+  else if (curr = x/2 + 1) then true  (* I could go all the way to x - 1 but seems a waste *)
+  else if (x mod curr == 0) then false  (* Modulo is 0 so curr must be a factor *)
+  else isPrime x (curr + 1);;
+
+
+let rec goldbachHelp x lo hi = 
+  if (isPrime lo 2 && isPrime hi 2) then (lo, hi)
+  else goldbachHelp x (lo - 1) (hi + 1);;
+
+
+let goldbachpair x =
+  (* Start looking from the center and expand outwards until a pair of primes is found *)
+  if (x > 2 && x mod 2 = 0) then goldbachHelp x (x/2) (x/2) else (0, 0);;
+
+(* goldbachpair 3181752;; *)
+
+(* 1.7 ============================================= *)
