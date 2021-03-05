@@ -109,3 +109,19 @@ let rec pairwisefilter cmp lst =
   (* List.tl t as I want to go 2 elements ahead *)
 
 pairwisefilter min [14; 11; 20; 25; 10; 11];;
+
+(* 1.9 ============================================= *)
+let rec polynomialHelp args fxn = 
+  match args with 
+  | [] -> fxn
+  (* snd is exponent, fst is coefficient *)
+  (* Gist: add previous result to newer function's result *)
+  | h::t -> polynomialHelp t (fun x -> fxn x + pow (x) (snd h) * (fst h));;
+
+let polynomial args = 
+  polynomialHelp args (fun x -> 0);;
+
+(* let polyfxn = polynomial [3, 6; -2, 3; 5, 0];; *)
+(* polyfxn 3;; *)
+
+(* 1.10 ============================================= *)
