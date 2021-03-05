@@ -91,3 +91,11 @@ let goldbachpair x =
 (* goldbachpair 3181752;; *)
 
 (* 1.7 ============================================= *)
+let rec equiv_on f g lst =
+  match lst with
+  | [] -> true
+  | h::t -> if (f h = g h) then equiv_on f g t else false;;
+
+(* let f i = i * i;; *)
+(* let g i = 3 * i;; *)
+(* equiv_on f g [1;2;3];; *)
