@@ -125,3 +125,21 @@ let polynomial args =
 (* polyfxn 3;; *)
 
 (* 1.10 ============================================= *)
+(* Gist: append new element to existing power sets *)
+
+let rec updateSets sets el =
+  match sets with (* `a list list *)
+  | []::t -> sets@[el]::(updateSets t el)
+  | (h::[])::t -> (h::[el])::(updateSets t el)
+  | (h::more)::t -> ((h::more)@[el])::(updateSets t el)
+  | [] -> sets
+  
+let rec powersetHelp lst sets =
+  match lst with 
+  | [] -> sets
+  | h::t -> powersetHelp t (updateSets sets h);;
+
+let powerset lst = 
+  powersetHelp lst [[]];;
+
+powerset [3; 4; 10; 15];;
