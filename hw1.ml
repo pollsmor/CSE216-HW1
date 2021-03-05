@@ -4,14 +4,14 @@ let rec pow x n =
   | 0 -> 1
   | n -> x * pow x (n - 1);;
 
-pow ~-3 3;; (* int: -27 *)
+(* pow ~-3 3;; (* int: -27 *) *)
 
 let rec float_pow x n = 
   match n with
   | 0 -> 1.0
   | n -> x *. float_pow x (n - 1);;
 
-  float_pow 1.5 2;; (* float: 2.25 *)
+(* float_pow 1.5 2;; (* float: 2.25 *) *)
 
 (* 1.2 ============================================= *)
 let rec compress lst =
@@ -20,7 +20,7 @@ let rec compress lst =
   | [n] -> [n]
   | h::t -> if h = List.hd t then compress t else h::compress t;;
 
-compress ["a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e"];;
+(* compress ["a";"a";"b";"c";"c";"a";"a";"d";"e";"e";"e"];; *)
 
 (* 1.3 ============================================= *)
 let rec remove_if lst pred = 
@@ -28,7 +28,7 @@ let rec remove_if lst pred =
   | [] -> []
   | h::t -> if pred h then remove_if t pred else h::remove_if t pred;;
 
-remove_if [1;2;3;4;5] (fun x -> x mod 2 = 1);;
+(* remove_if [1;2;3;4;5] (fun x -> x mod 2 = 1);; *)
 
 (* 1.4 ============================================= *)
 let min (i: int) (j: int) = 
@@ -45,8 +45,28 @@ let slice lst i j = (* Serves a double purpose of being a wrapper function and h
   if (i < j) then sliceHelp lst i (min j (List.length lst)) 0
   else [];;
 
-slice ["a";"b";"c";"d";"e";"f";"g";"h"] 2 6;;
-slice ["a";"b";"c";"d";"e";"f";"g";"h"] 3 2;;
-slice ["a";"b";"c";"d";"e";"f";"g";"h"] 3 20;;
+(* slice ["a";"b";"c";"d";"e";"f";"g";"h"] 2 6;; *)
+(* slice ["a";"b";"c";"d";"e";"f";"g";"h"] 3 2;; *)
+(* slice ["a";"b";"c";"d";"e";"f";"g";"h"] 3 20;; *)
 
 (* 1.5 ============================================= *)
+let rec updateClasses fn el classes =
+  match classes with (* `a list list [[1]]*)
+  | []::t -> [[]]  (* End condition *)
+  | (h::[])::t ->   if (fn h el) then (h::[el])::updateClasses fn el t
+                               else [h]::(updateClasses fn el t)
+  | (h::more)::t -> if (fn h el) then ((h::more)@[el])::updateClasses fn el t
+                               else (h::more)::(updateClasses fn el t)
+  | [] -> [[]];; (* Shouldn't run? *)
+
+let rec equivsHelp fn lst classes = 
+  match lst with 
+  | [] -> classes 
+  | h::t -> equivsHelp fn t (updateClasses fn h classes);;
+
+let equivs fn lst = 
+  match lst with 
+  | [] -> [[]]
+  | h::t -> equivsHelp fn t [[h]];;
+
+equivs (fun x y -> (=) (x mod 2) (y mod 2)) [1; 2; 3; 4; 5; 6; 7; 8];;
