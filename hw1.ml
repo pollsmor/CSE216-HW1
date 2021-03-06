@@ -1,5 +1,3 @@
-(* Part 1 =========================================================================================== *)
-
 (* 1.1 ============================================= *)
 let rec pow x n =
   match n with
@@ -145,12 +143,3 @@ let powerset lst =
   powersetHelp lst [[]];; (* The empty set is a subset of every set *)
 
 (* powerset [3; 4; 10; 15];; *)
-
-(* Part 2 =========================================================================================== *)
-
-(* 2.1 ============================================= *)
-type bool_expr =
-  | Lit of string
-  | Not of bool_expr
-  | And of bool_expr * bool_expr
-  | Or of bool_expr * bool_expr;;
