@@ -1,3 +1,5 @@
+(* Part 1 =========================================================================================== *)
+
 (* 1.1 ============================================= *)
 let rec pow x n =
   match n with
@@ -129,9 +131,9 @@ let polynomial args =
 
 let rec updateSets sets el =
   match sets with (* `a list list *)
-  | []::t -> sets@[el]::(updateSets t el)
-  | (h::[])::t -> (h::[el])::(updateSets t el)
-  | (h::more)::t -> ((h::more)@[el])::(updateSets t el)
+  | []::t -> sets@[el]::(updateSets t el) (* Prepend previous set, append to empty set *)
+  | (h::[])::t -> (h::[el])::(updateSets t el) (* For subsets of length 1 *)
+  | (h::more)::t -> ((h::more)@[el])::(updateSets t el) (* For subsets of length 2+ *)
   | [] -> sets
   
 let rec powersetHelp lst sets =
@@ -140,6 +142,15 @@ let rec powersetHelp lst sets =
   | h::t -> powersetHelp t (updateSets sets h);;
 
 let powerset lst = 
-  powersetHelp lst [[]];;
+  powersetHelp lst [[]];; (* The empty set is a subset of every set *)
 
-powerset [3; 4; 10; 15];;
+(* powerset [3; 4; 10; 15];; *)
+
+(* Part 2 =========================================================================================== *)
+
+(* 2.1 ============================================= *)
+type bool_expr =
+  | Lit of string
+  | Not of bool_expr
+  | And of bool_expr * bool_expr
+  | Or of bool_expr * bool_expr;;
